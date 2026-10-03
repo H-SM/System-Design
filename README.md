@@ -61,3 +61,20 @@ What if we need to add more servers here? now the load balancing will be differe
 Imagine having a cache here, that gets completely dumped. A more general idea to do this is having a small shift from the ends of each servers that overlooks the calls on the new server and cause a minimal dump of information. 
 
 ![Generic Bucket Diagram](/image-2.png)
+
+| **how does the consistent hashing overlooks this change in the bucket in the optimal way like above?**
+
+Imagine having the request as a circle over the possible hashes, and the servers to have mapped hash over the similar function and further MOD it out to the N (the total servers we have) and assign the servers in the ring. Imagine being the worst case for that server to handle it.. We simply map the request to the nearest server in the **ring**. The load the the distance between the servers are uniformly random, thus the architecture to be the best for the case. 
+
+![Consistent Hashing](/image-3.png)
+
+
+```
+The expected load factor (average) -> 1/N
+```
+
+In this architecture if we add a new server now, the new server feeds the load the hash function assigns to take. Or simply it governs the set area an old server was already handling. making the change much less in order for minimizing the aspect that affected previously over the call buckets. **but, practically we can have skewwed distributions**, if any server fails and the next fallback is comparatively away. (look the diagram to imagine that well), if the S1 server failed the S4 has the half of teh capacity. (This may be more prone in less number of servers). 
+
+**Now how to solve the above?** We can make multiple virtual servers in the grid (not buy them, but mentally map them). Having multiple hash functions (h1, h2, h3 for example) **so the same server would map to 3 points (as an example)**, Doing it at log(M) the load never becomes skewwed. 
+
+| Example code -> [Consistent Hashing](/consistentHashing.java)
