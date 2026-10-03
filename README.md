@@ -78,3 +78,25 @@ In this architecture if we add a new server now, the new server feeds the load t
 **Now how to solve the above?** We can make multiple virtual servers in the grid (not buy them, but mentally map them). Having multiple hash functions (h1, h2, h3 for example) **so the same server would map to 3 points (as an example)**, Doing it at log(M) the load never becomes skewwed. 
 
 | Example code -> [Consistent Hashing](/consistentHashing.java)
+
+## MESSAGE/TASK QUEUE
+
+Having a system to relieve the client from having an immediate response (while your ordering food they ask "please wait for some time"), being a confirmation over the action done from the client. This gets pushed to a queue (of orders) of messages awaiting the fulfillment by the subscriber (the end maker). After which the fulfillment is handled and the required (the expected) response is given back the the client with what they want. This makes the client happy (even thou they need to wait), the server to take its time in order to process the request (imagine being an expensive request), being **completely async!** The messages could be pushed in set priority (time, expected params or simplt a FIFO). The client may work on other aspects, like placing new requests that doesn't need to wait for the time of fulfillment for the main request. **The other advantage being we can have multiple subscribers, or the servers to fulfill the request and be more resilient over the request handing** If one servers just burns, the next one can handle it out. (this is load balacing in the back, wioth some heart-beat machanism on the servers). Examples - RabbitMQ or Apache Kafka.
+
+| how is is different from Pub/Sub? 
+
+Pub/Sub is not a traditional message queue; it is a broadcast messaging pattern, whereas a message queue is a point-to-point task distribution pattern.
+
+Key Differences
+• Message Queue (Point-to-Point)
+	• Pattern: One-to-one.
+	• Behavior: A single message goes to only one consumer. Once a worker processes and acknowledges the message, it is removed from the queue.
+	• Best For: Distributing background jobs, balancing workloads, and ensuring a task is done only once (e.g., processing a payment).
+	• Example: Amazon SQS (Standard queues).
+• Pub/Sub (Publish-Subscribe)
+	• Pattern: One-to-many (Fan-out).
+	• Behavior: A publisher sends a message to a topic, and every subscriber receives an independent copy of that message.
+	• Best For: Broadcasting events, system-wide notifications, and event-driven architectures where multiple services need to react to the same action.
+	• Example: Google Cloud Pub/Sub or AWS SNS.
+The Overlap
+Modern messaging tools like RabbitMQ or Apache Kafka can act as both, depending on how you configure your consumers and subscriptions. For instance, if you attach a single subscription/consumer group to a topic, a Pub/Sub system can behave like a work queue.
