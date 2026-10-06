@@ -100,3 +100,19 @@ Key Differences
 	• Example: Google Cloud Pub/Sub or AWS SNS.
 The Overlap
 Modern messaging tools like RabbitMQ or Apache Kafka can act as both, depending on how you configure your consumers and subscriptions. For instance, if you attach a single subscription/consumer group to a topic, a Pub/Sub system can behave like a work queue.
+
+
+## Monolith v/s Microservices
+
+Monolith | Microservices |
+--- | --- | 
+ **Myth** A huge machine running the entire system | **Myth** 1 function or group of features in bunch of services (systems) being interconnected |
+A single source of truth for the entire business logic | chunked out into business units (connected via a gateway like ep-service) |
+Adv - Scales out into multiple servers over load | Scability (easier to design) |
+Adv - less moving parts (no need to think about breaking into services and easy to operate) | comparatively needs less context (to that service) |
+Adv - less duplications | less paralled dependency between teams |
+Adv - FAST (new internal RPC calls between servers) | **easier to reason and scale about (more clear picture in the content of service)** |
+DisAdv - new team members needs a lot of context (like loop-backend) | not easy to design (could have far more parts) |
+DisAdv - complicated deployments (any change require a new full deployment) |  |
+DisAdv - SINGLE POINT OF FAILURE |  |
+small team | large team (with different logics to cover) |
