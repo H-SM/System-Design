@@ -116,3 +116,12 @@ DisAdv - new team members needs a lot of context (like loop-backend) | not easy 
 DisAdv - complicated deployments (any change require a new full deployment) |  |
 DisAdv - SINGLE POINT OF FAILURE |  |
 small team | large team (with different logics to cover) |
+
+## DATBASE SHARDING
+
+Imagine a pizza, and each slice is to be served a server. Put that thing out, it's simply horizontal partitioning between servers (database servers). We have a parameter over which we have shared the database resources to serve, and we use that in order to judge which shard the request needs to go (or in which database).. the parameter could be anything like userIds, ranges, lists.. faster, easier to manage and query over.. but tends to be slow in multi shards, ie., **JOINS** (more I/O since we need info in other shards).. another drawback is **it's completely inflexible** (no more or less pizza slices), there are fixed number of shards! How we solve that? If a shard becomes too big, we slice it out, ie., **heiarchical sharding**. 
+
+We can further have indexes over each shard (PK, or non-key attributes) to make queries, thus going forward with index only scans and use them for less heap calls to tables (*indirectly faster sub-searchs under the sharded paramter*), we can even hvae the master/slave replication on each shards as well. 
+
+## CACHING
+
