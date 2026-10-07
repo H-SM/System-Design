@@ -125,3 +125,17 @@ We can further have indexes over each shard (PK, or non-key attributes) to make 
 
 ## CACHING
 
+- 2 ways, client to server (CDN or local), server to db (server memory, redis)
+- **Avoiding repeated work (or latency) by using more storage**
+
+Cache Policy 
+- How to manage writes (updates) to a cache (do we update the cache later or as the db updates).
+- What data do we evict on overflow (eviction), LRU, LFU or optimistic-volatile (this one - It randomly samples keys, prioritizes keys that have a Time-to-Live (TTL) set, and only falls back to keys without a TTL if more room is strictly required.)
+
+Drawbacks 
+- unoptimized cache or poor hit rate would cause more latency. 
+- Thrashing in Cache (eviction causing reads due to poor optimization or simply the load is more than cache size over loops of data)
+- eventual consistency
+
+Where do we place the cache? 
+- in server, in database, local client (local storage, CDN), global cache [like redis]  
